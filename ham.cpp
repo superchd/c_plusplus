@@ -1,17 +1,20 @@
 #include <cstdlib>
-#include<iostream>
-#include<string.h>
-#include<stdio.h>
+#include <iostream>
+#include <string.h>
+#include <cstdio>
 #include <algorithm>
+#include <vector>
+
 using namespace std;
 
 /**************************************************************************************/
 class Hamstring {
     public:
         void read_strings();
-        void read_ages();
+        void read_lengths();
+	int find_distance();
     private:
-        vector<string> strings;
+        vector<string> strs;
 	vector<int> lengths;
 	vector<int> counts;
 };
@@ -19,9 +22,11 @@ class Hamstring {
 void Hamstring::read_strings()
 {
 	int i;
+	string n;
 
     for (i = 0 ; i < 2; i++) {
-        strings.push_back(n);
+	    cin >> n;
+        strs.push_back(n);
     }
 }
 
@@ -32,9 +37,8 @@ void Hamstring::read_lengths()
 	int i;
 	n = 0;
     for (i = 0; i < 2 ; i++) {
-        n = string[i].length;
+        n = strs[i].length();
         lengths.push_back(n);
-	i++;
     }
 }
 
@@ -48,18 +52,31 @@ int Hamstring::find_distance()
 
 	count = 0;
 	string changed = "";
-	k = strings[0].length - strings[1].length;
-	for (int i = 0; i < k ; i++)
+	string temp;
+	k = strs[0].length() - strs[1].length();
+	if (k < 0)
 	{
-		changed += '0';
-		changed += string[1];
-		for(int i=0; strings[0][i]!=0; i++)
+		temp = strs[0];
+		strs[0] = strs[1];
+		strs[1] = temp;
+		k *= -1;
+	}
+		
+	for (int i = 0; i <= k ; i++)
+	{
+		for (int j = 0; j < i; j++)
 		{
-        		if((strings[0][i] != changed[i]) && changed[i] != '0')
+			changed += '0';
+		}
+		changed += strs[1];
+		for(int i=0; strs[0][i]!=0; i++)
+		{
+        		if((strs[0][i] != changed[i]) && changed[i] != '0' && changed[i] != ' ' && changed[i] != '\0')
             			count++;
 		}
-		counts.push_back[count];
+		counts.push_back(count);
 		count = 0;
+		changed = "";
 	}
 	/*
 	for(int i=0; strings[0][i]!=0; i++)
@@ -71,7 +88,6 @@ int Hamstring::find_distance()
 	int min = *min_element(counts.begin(), counts.end());
 	return min;
 }
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 int main(void) 
